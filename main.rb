@@ -2,6 +2,7 @@ require 'sinatra'
 require 'slim'
 require 'sass'
 require './song'
+require 'data_mapper'
 
 configure :development do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
@@ -17,6 +18,19 @@ configure do
   set :username, 'frank'
   set :password, 'sinatra'
 end
+
+
+helpers do
+  def css(*stylesheets)
+    stylesheets.map do |stylesheet|
+      "<link href=\"/#{stylesheet}.css\" media=\"screen, projection\"rel=\"stylesheet\" />"
+    end.join
+  end 
+end
+  def current?(path='/')
+    (request.path==path || request.path==path+'/') ? "current" : nil
+  end  
+
 
 # basic route handler displays a view called login.
 get '/login' do
@@ -74,6 +88,15 @@ get '/logout' do
   session.clear
   redirect to('/login')
 end
+
+def set_title
+  @title ||= "Songs By Sinatra"
+end
+
+before do
+  set_title
+end
+
 
 
 

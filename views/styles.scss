@@ -42,6 +42,10 @@ padding-left: 84px;
   }
 }
 
+nav a.current {
+  background: lighten($black, 5%);
+}
+
 nav {
   @include tabs ($background: $black, $color: $white);
   font-weight: bold;
