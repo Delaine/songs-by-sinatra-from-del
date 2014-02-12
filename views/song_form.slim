@@ -1,9 +1,9 @@
-lable for="title" Title:
+label for="title" Title:
 input#title type="text" name="song[title]" value="#{@song.title}"
-lable for="length" Length:
+label for="length" Length:
 input#length type="number" name="song[length]" value="#{@song.length}"
-lable for="released_on" Date(mm/dd/yyyy):
-input#released_on type="text" name="song[released_on]" value="#{@song.released_on.strftime("%m/%d/%y") if @song.released_on}"
-lable for="lyrics" Lyrics:
+label for="released_on" Date(mm/dd/yyyy):
+input#released_on type="text" name="song[released_on]" value="#{@song.released_on.strftime("%m/%d/%Y") if @song.released_on}"
+label for="lyrics" Lyrics:
 textarea#lyrics name="song[lyrics]" == @song.lyrics
-input type="sumit" value="Save Song"
+input type="submit" value="Save Song"

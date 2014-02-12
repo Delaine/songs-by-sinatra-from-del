@@ -1,5 +1,6 @@
 require 'dm-core'
 require 'dm-migrations'
+require 'sinatra/flash'
 
 
 
@@ -16,6 +17,8 @@ class Song
   end
 end
 
+
+DataMapper.finalize
 
 module SongHelpers
   def find_songs
@@ -35,7 +38,7 @@ helpers SongHelpers
 
 
 
-DataMapper.finalize
+
 
 get '/songs' do
   find_songs #@songs = Song.all
@@ -43,34 +46,41 @@ get '/songs' do
 end
 
 get '/songs/new' do
-  halt(401,'Not Authorized') unless session[admin]
+  #halt(401,'Not Authorized') unless session[:admin]
   @song = Song.new
   slim :new_song
 end
 
 get '/songs/:id' do
-	@song = find_song #Song.get(params[:id])
+	@song = Song.get(params[:id]) #@song = find_song 
 	slim :show_song
 end
 
 post '/songs' do
-  create_song #song = Song.create(params[:song])
-  redirect to("/songs/#{song.id}")
+  song = Song.create(params[:song])#flash[:notice] = "Song successfully added" if create_song
+  redirect to("/songs/#{song.id}") #@song.id}")
 end
 
 get '/songs/:id/edit' do
-  @song = find_song #Song.get(params[:id])
+  @song = Song.get(params[:id])#find_song
   slim :edit_song
 end
 
 put '/songs/:id' do
-  song = find_song #Song.get(params[:id])
+  #protected!
+  song = Song.get(params[:id])
+  #song = find_song #Song.get(params[:id])
   song.update(params[:song])
-  redirect to("/songs/#{song.id}")
+  #if song.update(params[:song])
+   # flash[:notice] = "Song successfully updated"
+    #end
+    redirect to("/songs/#{song.id}")
 end
 
 delete '/songs/:id' do
-  find_song.destroy #Song.get(params[:id]).destroy
+  if find_song.destroy #Song.get(params[:id]).destroy
+  flash[:notice] = "Song deleted"
+  end
   redirect to('/songs')
 end
 

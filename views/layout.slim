@@ -2,7 +2,7 @@
 doctype html
 html lang= "en"
 head
-  title== @title
+  title== @title || "Songs By Sinatra"
   meta charset="utf-8"
   == css :styles
 
@@ -16,5 +16,6 @@ body
         li <a href="/contact" title="Contact">Contact</a>
         li <a href="/songs" title="Songs">Songs</a>
   section
+    == styled_flash
     == yield
   
